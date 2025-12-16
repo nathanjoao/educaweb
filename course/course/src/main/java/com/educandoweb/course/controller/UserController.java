@@ -15,14 +15,23 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll() {
-        return service.findAll();
-    }
-
     @PostMapping("/post")
     public ResponseEntity<User> save(@RequestBody User user){
         return service.save(user);
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<User>> findAll() {
+        return service.findAll();
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<User> findUser(@RequestBody String name){
+        return service.findUser(name);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id){
+        service.deleteUser(id);
+    }
 }

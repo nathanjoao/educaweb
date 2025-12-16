@@ -15,13 +15,22 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<User>> findAll() {
         List<User> users = repository.findAll();
         return ResponseEntity.ok().body(users);
     }
 
-    public ResponseEntity<User> save(User user){
+    public ResponseEntity<User> save(User user) {
         User savedUser = repository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
+
+    public ResponseEntity<User> findUser(String name) {
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findByName(name));
+    }
+
+    public ResponseEntity<Void> deleteUser(Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build(); // HTTP 204
     }
 }
