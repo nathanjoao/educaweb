@@ -25,9 +25,14 @@ public class UserController {
         return service.findAll();
     }
 
-    @GetMapping("/getUser")
-    public ResponseEntity<User> findUser(@RequestBody String name){
-        return service.findUser(name);
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<User> findUser(@PathVariable Long id){
+        return service.findUser(id);
+    }
+
+    @GetMapping("/getUserByName/{name}")
+    public ResponseEntity<User> findUserByName(@PathVariable String name){
+        return service.findUserByName(name);
     }
 
     @DeleteMapping("/delete/{id}")
