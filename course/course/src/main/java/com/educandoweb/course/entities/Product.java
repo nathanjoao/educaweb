@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_product")
@@ -18,7 +19,6 @@ public class Product {
     private String imgUrl;
     @OneToMany
     private List<OrderItem> items = new ArrayList<>();
-
 
     public Product(){}
 
@@ -67,5 +67,18 @@ public class Product {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return false;
+        if(!(o instanceof Product)) return false;
+        Product other = (Product) o;
+        return id != null && Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(id);
     }
 }
