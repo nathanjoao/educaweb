@@ -15,14 +15,16 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date moment;
-    private String orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
     @OneToMany
     private List<OrderItem> items = new ArrayList<>();
+
 
     public Order() {
     }
 
-    public Order(Date moment, String orderStatus) {
+    public Order(Date moment, OrderStatus orderStatus) {
         this.moment = moment;
         this.orderStatus = orderStatus;
     }
@@ -43,12 +45,12 @@ public class Order {
         this.moment = moment;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public void setOrderStatus(OrderStatus status) {
+        this.orderStatus = status;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public OrderStatus getOrderStatus(){
+        return orderStatus;
     }
 
     public double total(){
