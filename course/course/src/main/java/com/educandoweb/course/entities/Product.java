@@ -19,6 +19,9 @@ public class Product {
     private String imgUrl;
     @OneToMany
     private List<OrderItem> items = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Product(){}
 
