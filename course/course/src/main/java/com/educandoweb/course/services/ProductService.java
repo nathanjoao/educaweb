@@ -5,7 +5,6 @@ import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.repositories.CategoryRepository;
 import com.educandoweb.course.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +16,13 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     public Product save(Product product) {
-        Long categoryId = product.getCategory().getId();
+        Long categoryId = null;
+        for (Category category : product.getCategories()) {
+            categoryId = category.getId();
+        }
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-        product.setCategory(category);
+        product.getCategories().add(category);
         return repository.save(product);
     }
 

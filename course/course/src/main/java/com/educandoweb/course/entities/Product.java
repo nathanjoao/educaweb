@@ -17,26 +17,37 @@ public class Product {
     private String description;
     private Double price;
     private String imgUrl;
-    @OneToMany
-    private List<OrderItem> items = new ArrayList<>();
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany
+    @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id")
+            , inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Product(){}
+    public Product() {
+    }
 
-    public Product(String name, String description, Double price, String imgUrl){
+    public Product(String name, String description, Double price, String imgUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
     }
 
-    public Long getId(){
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,24 +83,24 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
-    public Category getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
-    public boolean equals(Object o){
-        if(this == o) return false;
-        if(!(o instanceof Product)) return false;
+    public boolean equals(Object o) {
+        if (this == o) return false;
+        if (!(o instanceof Product)) return false;
         Product other = (Product) o;
         return id != null && Objects.equals(id, other.id);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(id);
     }
 }

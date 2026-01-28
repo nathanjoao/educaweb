@@ -17,9 +17,11 @@ public class Order {
     private Date moment;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @OneToMany
-    private List<OrderItem> items = new ArrayList<>();
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Order() {
     }
@@ -27,6 +29,22 @@ public class Order {
     public Order(Date moment, OrderStatus orderStatus) {
         this.moment = moment;
         this.orderStatus = orderStatus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -55,7 +73,7 @@ public class Order {
 
     public double total(){
         double sum = 0.0;
-        for(OrderItem orderItem : items){
+        for(OrderItem orderItem : orderItems){
             sum += orderItem.getPrice();
         }
         return sum;
