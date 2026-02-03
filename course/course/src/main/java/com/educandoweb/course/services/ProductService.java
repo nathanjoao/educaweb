@@ -7,6 +7,8 @@ import com.educandoweb.course.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -16,13 +18,13 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     public Product save(Product product) {
-        Long categoryId = null;
-        for (Category category : product.getCategories()) {
-            categoryId = category.getId();
+        List<Long> categoriesIds = product.getCategories().stream().map(Category::getId).toList();
+        List<Category> categories = categoryRepository.findAllById(categoriesIds);
+        if(categories.isEmpty()){
+            throw new RuntimeException("Categories not found");
         }
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        product.getCategories().add(category);
+        product.getCategories().clear();
+        product.getCategories().addAll(categories);
         return repository.save(product);
     }
 
